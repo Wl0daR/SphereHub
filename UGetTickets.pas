@@ -8,28 +8,27 @@ uses
 type
   TGetTickets = class
   private
-    FQuery: TFDQuery;
+    FQuery : TFDQuery;
   public
-    constructor Create(AConnection: TFDConnection);
     function GetAllTickets: TFDQuery;
   end;
 
 implementation
 
-constructor TGetTickets.Create(AConnection: TFDConnection);
-begin
-  AConnection := UConnection.DataModuleSphereHub.FDConnection;
-  FQuery := TFDQuery.Create(nil);
-  FQuery.Connection := AConnection;
-end;
 
 function TGetTickets.GetAllTickets: TFDQuery;
-const
-  SQL = 'SELECT * FROM reports';
 begin
-  FQuery.SQL.Text := SQL;
-  FQuery.Open;
-  Result := FQuery;
+     FQuery := TFDQuery.Create(nil);
+     try
+        DataModuleSphereHub.FDConnection.Online;
+        self.FQuery.Connection := DataModuleSphereHub.FDConnection;
+        self.FQuery.Close;
+        FQuery.SQL.Text := 'SELECT * FROM reports';
+        FQuery.Open;
+        Result := self.FQuery;
+        finally
+        DataModuleSphereHub.FDConnection.Offline;
+     end;
 end;
 
 end.

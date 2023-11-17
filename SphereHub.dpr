@@ -10,8 +10,8 @@ uses
 
 begin
   Application.Initialize;
+  Application.CreateForm(TDataModuleSphereHub, DataModuleSphereHub);
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TMainForm, MainForm);
-  Application.CreateForm(TDataModuleSphereHub, DataModuleSphereHub);
   Application.Run;
 end.

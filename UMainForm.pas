@@ -8,7 +8,7 @@ uses
   Vcl.StdCtrls, UGetTickets, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client;
+  FireDAC.Comp.Client, UConnection;
 
 type
   TMainForm = class(TForm)
@@ -18,7 +18,9 @@ type
     procedure btnAddClick(Sender: TObject);
   private
     FGetTickets: TGetTickets;
+    dsTickets: TDataSource;
   public
+    TicketsQuery: TFDQuery;
     procedure LoadTicketsData;
   end;
 
@@ -31,26 +33,20 @@ implementation
 
 procedure TMainForm.btnAddClick(Sender: TObject);
 begin
-  Application.Terminate;
+     Application.Terminate;
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
-  LoadTicketsData;
+     FGetTickets := TGetTickets.Create;
+     LoadTicketsData;
 end;
 
 procedure TMainForm.LoadTicketsData;
-var
-  TicketsQuery: TFDQuery;
 begin
-  TicketsQuery := FGetTickets.GetAllTickets;
-  try
-    // Tutaj mo¿esz przetwarzaæ dane na temat biletów
-    // np. u¿ywaæ TicketsQuery do wyœwietlenia danych w komponencie DBGrid
-    dtgTickets.DataSource.DataSet := TicketsQuery; // Przyk³adowe ustawienie Ÿród³a danych dla DBGrid
-  finally
-    // TicketsQuery.Close; // Nie zamykaj TFDQuery, poniewa¿ mo¿e byæ u¿ywane do dalszej nawigacji po danych
-  end;
+     Self.dsTickets := TDataSource.Create(Self);
+     dsTickets.DataSet := FGetTickets.GetAllTickets;
+     dtgTickets.DataSource := Self.dsTickets;
 end;
 
 end.
