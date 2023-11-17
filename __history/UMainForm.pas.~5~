@@ -1,0 +1,28 @@
+unit UMainForm;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids, Vcl.DBGrids,
+  Vcl.StdCtrls;
+
+type
+  TMainForm = class(TForm) // Zmieniona nazwa klasy z TForm1 na TMainForm
+    btnAdd: TButton;
+    dtgTickets: TDBGrid;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  MainForm: TMainForm; // Zmieniona nazwa zmiennej globalnej z Form1 na MainForm
+
+implementation
+
+{$R *.dfm}
+
+end.
+

@@ -1,0 +1,31 @@
+unit UGetTickets;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, FireDAC.Comp.Client, Data.DB;
+
+type
+  TGetTickets = class
+  private
+    FQuery: TFDQuery;
+  public
+    constructor Create(AQuery: TFDQuery);
+    procedure GetAllTickets;
+  end;
+
+implementation
+
+constructor TGetTickets.Create(AQuery: TFDQuery);
+begin
+  FQuery := AQuery;
+end;
+
+procedure TGetTickets.GetAllTickets;
+begin
+  FQuery.SQL.Text := 'SELECT * FROM Tickets'; // Dostosuj zapytanie do swojej tabeli biletów
+  FQuery.Open;
+end;
+
+end.
+

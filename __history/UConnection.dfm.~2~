@@ -1,0 +1,16 @@
+object DataModuleSphereHub: TDataModuleSphereHub
+  Height = 1080
+  Width = 1440
+  PixelsPerInch = 144
+  object FDConnection: TFDConnection
+    Params.Strings = (
+      'Database=spherehub'
+      'DriverID=MySQL'
+      'Password=1234'
+      'Server=localhost'
+      'Port=3360'
+      'User_Name=root')
+    Left = 144
+    Top = 104
+  end
+end

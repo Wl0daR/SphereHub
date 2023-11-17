@@ -1,4 +1,4 @@
-object Form1: TForm1
+object MainForm: TMainForm
   Left = 0
   Top = 0
   Caption = 'Form1'
@@ -10,11 +10,12 @@ object Form1: TForm1
   Font.Height = -12
   Font.Name = 'Segoe UI'
   Font.Style = []
+  OnCreate = FormCreate
   DesignSize = (
     1047
     595)
   TextHeight = 15
-  object Button1: TButton
+  object btnAdd: TButton
     Left = 824
     Top = 8
     Width = 215
@@ -22,8 +23,10 @@ object Form1: TForm1
     Anchors = [akTop, akRight]
     Caption = 'Dodaj'
     TabOrder = 0
+    OnClick = btnAddClick
+    ExplicitLeft = 814
   end
-  object DBGrid1: TDBGrid
+  object dtgTickets: TDBGrid
     Left = 8
     Top = 72
     Width = 1031
