@@ -16,6 +16,7 @@ type
     btnAdd: TButton;
     procedure FormCreate(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
+    procedure dtgTicketsDblClick(Sender: TObject);
   private
     FGetTickets: TGetTickets;
     dsTickets: TDataSource;
@@ -30,12 +31,31 @@ var
 
 implementation
 
+uses UCreateTicket, UEditTicket;
 {$R *.dfm}
 
 procedure TMainForm.btnAddClick(Sender: TObject);
 begin
-  Application.Terminate;
+  CreateTicket.ShowModal;
 end;
+
+procedure TMainForm.dtgTicketsDblClick(Sender: TObject);
+var
+  EditTicket: TEditTicket;
+begin
+  if dtgTickets.SelectedRows.Count > 0 then
+  begin
+    EditTicket := TEditTicket.Create(Self);
+    try
+      dtgTickets.DataSource.DataSet.GotoBookmark(dtgTickets.SelectedRows[0]);
+      EditTicket.txbDescription.Text := dtgTickets.DataSource.DataSet.FieldByName('description').AsString;
+      EditTicket.ShowModal;
+    finally
+      EditTicket.Free;
+    end;
+  end;
+end;
+
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
@@ -73,7 +93,7 @@ begin
       begin
         TextWidth := Canvas.TextWidth(Grid.Columns[i].Field.AsString);
         if TextWidth > MaxWidth then
-          MaxWidth := TextWidth;
+           MaxWidth := TextWidth;
         Grid.DataSource.DataSet.Next;
       end;
 

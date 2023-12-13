@@ -108,6 +108,14 @@
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="UGetTickets.pas"/>
+        <DCCReference Include="UCreateTicket.pas">
+            <Form>CreateTicket</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="UEditTicket.pas">
+            <Form>EditTicket</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

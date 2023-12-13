@@ -16,7 +16,7 @@ object MainForm: TMainForm
     595)
   TextHeight = 15
   object btnAdd: TButton
-    Left = 824
+    Left = 804
     Top = 8
     Width = 215
     Height = 49
@@ -24,19 +24,22 @@ object MainForm: TMainForm
     Caption = 'Dodaj'
     TabOrder = 0
     OnClick = btnAddClick
-    ExplicitLeft = 814
+    ExplicitLeft = 794
   end
   object dtgTickets: TDBGrid
     Left = 8
     Top = 72
-    Width = 1031
+    Width = 1021
     Height = 515
     Anchors = [akLeft, akTop, akRight, akBottom]
+    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgMultiSelect, dgTitleClick, dgTitleHotTrack]
+    ReadOnly = True
     TabOrder = 1
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
     TitleFont.Height = -12
     TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
+    OnDblClick = dtgTicketsDblClick
   end
 end
