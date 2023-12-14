@@ -14,5 +14,8 @@ begin
   Application.Initialize;
   Application.CreateForm(TDataModuleSphereHub, DataModuleSphereHub);
   Application.CreateForm(TMainForm, MainForm);
+  //Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TCreateTicket, CreateTicket);
+  Application.CreateForm(TEditTicket, EditTicket);
   Application.Run;
 end.

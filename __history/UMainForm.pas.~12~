@@ -3,12 +3,12 @@ unit UMainForm;
 interface
 
 uses
-  Winapi.Windows, Math, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids, Vcl.DBGrids,
   Vcl.StdCtrls, UGetTickets, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client, UConnection, Vcl.Buttons;
+  FireDAC.Comp.Client, UConnection;
 
 type
   TMainForm = class(TForm)
@@ -36,12 +36,7 @@ uses UCreateTicket, UEditTicket;
 
 procedure TMainForm.btnAddClick(Sender: TObject);
 begin
-  CreateTicket := TCreateTicket.Create(Self);
-  try
-      CreateTicket.ShowModal;
-  finally
-      CreateTicket.Free;
-  end;
+  CreateTicket.ShowModal;
 end;
 
 procedure TMainForm.dtgTicketsDblClick(Sender: TObject);
@@ -53,7 +48,7 @@ begin
     EditTicket := TEditTicket.Create(Self);
     try
       dtgTickets.DataSource.DataSet.GotoBookmark(dtgTickets.SelectedRows[0]);
-      EditTicket.txbDescription.Text := dtgTickets.DataSource.DataSet.FieldByName('Opis').AsString;
+      EditTicket.txbDescription.Text := dtgTickets.DataSource.DataSet.FieldByName('description').AsString;
       EditTicket.ShowModal;
     finally
       EditTicket.Free;
@@ -78,30 +73,36 @@ end;
 
 procedure TMainForm.AdjustColumnWidths(Grid: TDBGrid);
 var
-  i, j, MaxWidth: Integer;
+  i: Integer;
+  MaxWidth, TextWidth: Integer;
   Canvas: TCanvas;
 begin
-  Canvas := Grid.Canvas;
+  if Assigned(Grid.DataSource) and Assigned(Grid.DataSource.DataSet) then
+  begin
+    Canvas := Grid.Canvas;
 
-  Grid.DataSource.DataSet.DisableControls;
-  try
+
     for i := 0 to Grid.Columns.Count - 1 do
     begin
-      MaxWidth := 0;
+
+      MaxWidth := Canvas.TextWidth(Grid.Columns[i].Title.Caption);
+
+
       Grid.DataSource.DataSet.First;
-      while not Grid.DataSource.DataSet.Eof do
+      while not Grid.DataSource.DataSet.EOF do
       begin
-        Canvas.Font := Grid.Font;
-        MaxWidth := Max(MaxWidth, Canvas.TextWidth(Grid.Columns[i].Field.AsString));
+        TextWidth := Canvas.TextWidth(Grid.Columns[i].Field.AsString);
+        if TextWidth > MaxWidth then
+           MaxWidth := TextWidth;
         Grid.DataSource.DataSet.Next;
       end;
 
-      if MaxWidth > 0 then
-        Grid.Columns[i].Width := MaxWidth + 10;
+
+      MaxWidth := MaxWidth + 10;
+
+
+      Grid.Columns[i].Width := MaxWidth;
     end;
-  finally
-    Grid.DataSource.DataSet.EnableControls;
-    Grid.DataSource.DataSet.First;
   end;
 end;
 
