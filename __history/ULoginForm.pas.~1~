@@ -1,0 +1,100 @@
+unit ULoginForm;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+
+type
+  TForm1 = class(TForm)
+    btnLogin: TButton;
+    procedure btnLoginClick(Sender: TObject);
+  private
+    function GetCurrentUserName: string;
+    function IsUserInGroup(const UserName, GroupName: string): Boolean;
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+const
+  LG_INCLUDE_INDIRECT = $0001;
+  MAX_PREFERRED_LENGTH = DWORD(-1);
+  NERR_Success = 0;
+
+type
+  LOCALGROUP_USERS_INFO_0 = record
+    lgrui0_name: LPWSTR;
+  end;
+  PLOCALGROUP_USERS_INFO_0 = ^LOCALGROUP_USERS_INFO_0;
+
+function NetUserGetLocalGroups(servername: LPCWSTR; username: LPCWSTR; level: DWORD; flags: DWORD; var bufptr: Pointer; prefmaxlen: DWORD; var entriesread: DWORD; var totalentries: DWORD): DWORD; stdcall; external 'Netapi32.dll';
+function NetApiBufferFree(Buffer: Pointer): DWORD; stdcall; external 'Netapi32.dll';
+
+function TForm1.GetCurrentUserName: string;
+var
+  UserName: array[0..255] of Char;
+  Size: DWORD;
+begin
+  Size := 256;
+  if Windows.GetUserName(UserName, Size) then
+    Result := StrPas(UserName)
+  else
+    Result := '';
+end;
+
+function TForm1.IsUserInGroup(const UserName, GroupName: string): Boolean;
+var
+  BufPtr: Pointer;
+  EntriesRead, TotalEntries, i: DWORD;
+  LocalGroupUserInfo: PLOCALGROUP_USERS_INFO_0;
+begin
+  Result := False;
+  if NetUserGetLocalGroups(nil, PWideChar(UserName), 0, LG_INCLUDE_INDIRECT, BufPtr, MAX_PREFERRED_LENGTH, EntriesRead, TotalEntries) = NERR_Success then
+  begin
+    try
+      LocalGroupUserInfo := BufPtr;
+      for i := 0 to EntriesRead - 1 do
+      begin
+        if GroupName = LocalGroupUserInfo^.lgrui0_name then
+        begin
+          Result := True;
+          Break;
+        end;
+        Inc(LocalGroupUserInfo);
+      end;
+    finally
+      NetApiBufferFree(BufPtr);
+    end;
+  end;
+end;
+
+procedure TForm1.btnLoginClick(Sender: TObject);
+var
+  UserName: string;
+begin
+  UserName := GetCurrentUserName;
+  if UserName = '' then
+  begin
+    ShowMessage('Nie mo¿na pobraæ nazwy u¿ytkownika.');
+    Exit;
+  end;
+
+  if IsUserInGroup(UserName, 'TwojaGrupa') then
+  begin
+    // Logowanie do aplikacji
+    ShowMessage('Zalogowano pomyœlnie jako ' + UserName);
+  end
+  else
+    ShowMessage('Brak uprawnieñ do logowania.');
+end;
+
+end.
+

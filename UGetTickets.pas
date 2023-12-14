@@ -23,7 +23,7 @@ begin
         DataModuleSphereHub.FDConnection.Online;
         self.FQuery.Connection := DataModuleSphereHub.FDConnection;
         self.FQuery.Close;
-        FQuery.SQL.Text := 'SELECT * FROM View_ReportDetails;';
+        FQuery.SQL.Text := 'SELECT * FROM reports;';
         FQuery.Open;
         Result := self.FQuery;
         finally

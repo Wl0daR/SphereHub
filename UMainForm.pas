@@ -53,7 +53,7 @@ begin
     EditTicket := TEditTicket.Create(Self);
     try
       dtgTickets.DataSource.DataSet.GotoBookmark(dtgTickets.SelectedRows[0]);
-      EditTicket.txbDescription.Text := dtgTickets.DataSource.DataSet.FieldByName('Opis').AsString;
+      EditTicket.txbDescription.Text := dtgTickets.DataSource.DataSet.FieldByName('description').AsString;
       EditTicket.ShowModal;
     finally
       EditTicket.Free;

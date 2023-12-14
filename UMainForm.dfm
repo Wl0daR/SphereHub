@@ -30,6 +30,7 @@ object MainForm: TMainForm
     ParentFont = False
     TabOrder = 0
     OnClick = btnAddClick
+    ExplicitLeft = 906
   end
   object dtgTickets: TDBGrid
     Left = 8
