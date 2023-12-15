@@ -7,13 +7,16 @@ uses
   UGetTickets in 'UGetTickets.pas',
   UCreateTicket in 'UCreateTicket.pas' {CreateTicket},
   UEditTicket in 'UEditTicket.pas' {EditTicket},
-  ULoginForm in 'ULoginForm.pas' {LoginForm};
+  ULoginForm in 'ULoginForm.pas' {LoginForm},
+  Vcl.Themes,
+  Vcl.Styles;
 
 {$R *.res}
 
 begin
   Application.Initialize;
+  TStyleManager.TrySetStyle('Windows10 Dark');
   Application.CreateForm(TDataModuleSphereHub, DataModuleSphereHub);
-  Application.CreateForm(TLoginForm, LoginForm);
+  Application.CreateForm(TMainForm, MainForm);
   Application.Run;
 end.

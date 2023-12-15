@@ -31,7 +31,7 @@ var
 
 implementation
 
-uses UCreateTicket, UEditTicket;
+uses UCreateTicket, UEditTicket, ULoginForm;
 {$R *.dfm}
 
 procedure TMainForm.btnAddClick(Sender: TObject);
@@ -64,8 +64,11 @@ end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
-  FGetTickets := TGetTickets.Create;
-  LoadTicketsData;
+     LoginForm := TLoginForm.Create(self);
+     LoginForm.ShowModal;
+     LoginForm.Free;
+     FGetTickets := TGetTickets.Create;
+     LoadTicketsData;
 end;
 
 procedure TMainForm.LoadTicketsData;

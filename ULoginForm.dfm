@@ -34,6 +34,7 @@ object LoginForm: TLoginForm
     Height = 25
     Caption = 'Zaloguj'
     TabOrder = 0
+    OnClick = btnLoginClick
   end
   object txtLogin: TEdit
     Left = 88
